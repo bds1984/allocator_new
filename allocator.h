@@ -14,27 +14,28 @@ struct my_allocator
     using syze_type = std::size_t;
     pointer tmp_ptr;
     pointer ptr_head;
-    size_t Nalloc = {};
-    size_t alloc_index = {};
-    size_t del_counter = {};
+    size_t Nalloc = {};//"флаг" первая аллокация или нет
+    size_t alloc_index = {}; // порядковый номер элемента из первоначально аллоцированой памяти 
+
 
     T* allocate(size_t n)
     {
-        if (D == 0)
+        if (D == 0)// стандартный функционал работы аллокатора
+            //аллокатор каждый раз будет выполнять allocate и выделять столько памяти, сколько будет затребовано 
         {
             tmp_ptr = reinterpret_cast<T*>(malloc(n * sizeof(T)));
             ptr_head = tmp_ptr;
         }
-        else
+        else // функционал работы аллокатора в соотвествии с условиями домашнего задания
         {
             if (Nalloc == 0)
-            {
+            {//первая аллокация
                 tmp_ptr = reinterpret_cast<T*>(malloc(D * n * sizeof(T)));
                 ptr_head = tmp_ptr;
                 Nalloc++;
             }
             else
-            {
+            {//последующие запуски allocate
                 alloc_index += sizeof(T);
                 tmp_ptr += alloc_index;
             }
@@ -75,7 +76,7 @@ class my_container
     using myPtr = typename Traits::pointer;
     myPtr m_ptr = nullptr;
     Alloc my_allocator;
-    size_t count_of_elements = {};
+    size_t count_of_elements = {};//счетчик элементов в контейнере
     using allocator_type = Alloc;
 
 public:
@@ -89,7 +90,7 @@ public:
     {
         clear();
     }
-    T& operator[](size_t i)
+    T& operator[](size_t i)//доступ по []
     {
         return *(m_ptr + i);
     }
@@ -105,8 +106,10 @@ public:
     {
         return count_of_elements;
     };
-    void push_back(T&& value)
+    void push_back(T&& value) //добавление нового элемента, "аналог" push_back 
     {
+        /*создается новый ресурс памяти, туда копируется содержимое старого ресурса, после этого 
+        старый ресурс удаляется и указатели контейнера "переписываются" на новый*/
         Alloc tmp_alocator;
         myPtr tmp_ptr;
         try
