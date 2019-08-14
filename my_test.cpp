@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(test_m_ctr_2)
 my_container<int, my_allocator<int, 0>> m_ctr_test_2(4,5);
 BOOST_CHECK(m_ctr_test_2[2]==5);
 }
-
+}
 
 
 
