@@ -28,7 +28,7 @@ std::map<int, double, std::less<int>, my_allocator<std::pair<const int, double>,
     }
   BOOST_CHECK( m_map_test[7]==5040);
 }
-}
+BOOST_AUTO_TEST_SUITE_END()
 
 
 
