@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE my_test
 
-#include "main.cpp"
+#include "allocator.h"
 
 #include <boost/test/unit_test.hpp>
 
