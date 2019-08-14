@@ -192,7 +192,7 @@ double fact(int N)
 }
 
 
-int main()
+int main(int, char **)
 {
     std::map<int, double> m_map;
     my_container<int> m_ctr;
