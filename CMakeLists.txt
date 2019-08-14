@@ -65,5 +65,5 @@ include(CPack)
 enable_testing()
 
 add_test(my_test my_test)
-add_test(my_test my_test_1)
-add_test(my_test my_test_2)
+add_test(my_test_1 my_test)
+add_test(my_test_2 my_test)
