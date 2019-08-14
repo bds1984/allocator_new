@@ -19,7 +19,6 @@ set_target_properties(my_test PROPERTIES
 
 target_link_libraries(my_test
     ${Boost_LIBRARIES}
-   allocator
 )
 
 if (MSVC)
