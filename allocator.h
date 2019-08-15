@@ -36,11 +36,10 @@ struct my_allocator
             }
             else
             {//последующие запуски allocate
-                alloc_index += sizeof(T);
-                tmp_ptr += alloc_index;
+                alloc_index ++;
             }
         }
-        return tmp_ptr;
+        return tmp_ptr+alloc_index;
     }
 
     template <typename U>
@@ -57,14 +56,13 @@ struct my_allocator
     {
         p->~T();
     }
-    void deallocate(pointer p, size_t n = {})
+    void deallocate(pointer, size_t)
     {
         if (ptr_head)
         {
             std::free(ptr_head);
             ptr_head = nullptr;
         }
-        p += n;
     }
 };
 
@@ -83,7 +81,6 @@ public:
     explicit my_container(size_t number_elem = {}, T value = {}, Alloc a = {})
         : my_allocator(a)
     {
-        clear();
         this->emplace(number_elem, value);
     }
     ~my_container()
@@ -125,9 +122,23 @@ public:
             for (size_t i = 0; i < count_of_elements; i++)
             {
                 *(tmp_ptr + i) = *(m_ptr + i);
+                try
+                {
                 Traits::destroy(my_allocator, static_cast<T*>(m_ptr + i));
+                } 
+                catch (...)
+                {
+                    throw;
+                 }
             }
+            try
+            {
             Traits::deallocate(my_allocator, m_ptr, count_of_elements);
+            }
+             catch (...)
+            {
+                 throw;
+            }
             tmp_ptr[count_of_elements] = value;
             count_of_elements++;
             m_ptr = tmp_ptr;
